@@ -1,0 +1,29 @@
+- name: Shutdown K3s Cluster (workers -> masters -> postgres)
+  hosts: k3s
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Stop k3s-agent on workers
+      systemd:
+        name: k3s-agent
+        state: stopped
+      when: "'workers' in group_names"
+
+    - name: Stop k3s server on masters
+      systemd:
+        name: k3s
+        state: stopped
+      when: "'masters' in group_names"
+
+- name: Stop PostgreSQL (datastore)
+  hosts: k3sdb
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Stop PostgreSQL service
+      systemd:
+        name: postgresql
+        state: stopped

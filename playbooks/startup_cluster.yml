@@ -1,0 +1,38 @@
+- name: Start PostgreSQL first
+  hosts: k3sdb
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Start PostgreSQL service
+      systemd:
+        name: postgresql
+        state: started
+
+    - name: Wait for PostgreSQL to be ready
+      wait_for:
+        port: 5432
+        delay: 3
+        timeout: 30
+
+- name: Start K3s masters
+  hosts: masters
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Start k3s server
+      systemd:
+        name: k3s
+        state: started
+
+- name: Start K3s workers
+  hosts: workers
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Start k3s-agent
+      systemd:
+        name: k3s-agent
+        state: started

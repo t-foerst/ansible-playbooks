@@ -10,23 +10,16 @@
 10.10.40.214
 
 [debian]
-10.10.20.211
-10.10.20.212
-10.10.40.214
+10.10.20.211 ansible_user=root
+10.10.20.212 ansible_user=root
+10.10.40.214 ansible_user=root
 
 [ubuntu]
-10.10.20.200
-10.10.20.201
-10.10.20.205
-10.10.20.206
-10.10.20.207
-
-[k3s]
-10.10.20.200
-10.10.20.201
-10.10.20.205
-10.10.20.206
-10.10.20.207
+10.10.20.200 ansible_user=ubuntu
+10.10.20.201 ansible_user=ubuntu
+10.10.20.205 ansible_user=ubuntu
+10.10.20.206 ansible_user=ubuntu
+10.10.20.207 ansible_user=ubuntu
 
 [masters]
 10.10.20.200
@@ -36,6 +29,13 @@
 10.10.20.205
 10.10.20.206
 10.10.20.207
+
+[k3s:children]
+masters
+workers
+
+[k3s:vars]
+ansible_user=ubuntu
 
 [proxys]
 10.10.20.212
@@ -48,7 +48,7 @@
 10.10.40.214
 
 [k3sdb]
-10.10.20.211
+10.10.20.211 ansible_user=root
 
 [all:vars]
-ansible_python_interpreter=/usr/bin/python3 
+ansible_python_interpreter=/usr/bin/python3
