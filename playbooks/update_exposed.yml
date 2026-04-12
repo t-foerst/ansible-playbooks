@@ -1,4 +1,6 @@
-- hosts: debian,ubuntu
+---
+- name: Update exposed services
+  hosts: exposed
   become: yes
   tasks:
     - name: Update apt cache
